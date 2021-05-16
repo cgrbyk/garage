@@ -16,12 +16,18 @@ class GarageApplicationTests {
 
     @Test
     void garageTest() {
-        garageService.parkUnit(new Car("AA", "Red"));
-        garageService.parkUnit(new Jeep("BB", "yel"));
-        garageService.parkUnit(new Truck("CC", "grn"));
-        garageService.leaveUnit(3);
-        garageService.parkUnit(new Car("DD", "gry"));
+        assert garageService.parkUnit(new Car("AA", "Red")).equals("Allocated 1 slot");
+        assert garageService.parkUnit(new Jeep("BB", "yel")).equals("Allocated 2 slot");
+        assert garageService.parkUnit(new Truck("CC", "grn")).equals("Allocated 4 slot");
+        assert garageService.parkUnit(new Truck("DD", "gry")).equals("No space left in garage for unit");
         System.out.println(garageService.getStatus());
+        assert garageService.getStatus().equals("AA Red [0]\n" +
+                "BB yel [2,3]\n" +
+                "CC grn [5,6,7,8]\n");
+        assert garageService.leaveUnit(0).equals("AA left");
+        System.out.println(garageService.getStatus());
+        assert garageService.getStatus().equals("BB yel [2,3]\n" +
+                "CC grn [5,6,7,8]\n");
     }
 
 }
